@@ -3,6 +3,8 @@ package com.d9nich;
 import java.util.*;
 
 public class GreedyAlgorithm {
+    public static final int INFINITY = Integer.MAX_VALUE / 2;
+
     private GreedyAlgorithm() {
     }
 
@@ -22,7 +24,11 @@ public class GreedyAlgorithm {
 
     private static int findL(int[][] matrixOfDistance, int startPoint, Set<Integer> pointsToVisit, int endPoint) {
         if (pointsToVisit.isEmpty()) {
-            return matrixOfDistance[startPoint][endPoint];
+            int finalDistance = matrixOfDistance[startPoint][endPoint];
+            if (finalDistance < INFINITY)
+                return finalDistance;
+            else
+                return -1;
         }
 
         int[] distance = matrixOfDistance[startPoint];
