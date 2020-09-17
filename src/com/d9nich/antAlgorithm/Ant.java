@@ -45,7 +45,7 @@ public class Ant {
 
         ArrayList<Edge> edges = new ArrayList<>();
         pointsToVisit.forEach(e -> edges.add(new Edge(needToGo(currentPosition, e), e)));
-        double randomValue = new Random().nextInt((int) Math.floor(edges.stream().mapToDouble(Edge::getDistance).sum()));
+        double randomValue = new Random().nextDouble() * edges.stream().mapToDouble(Edge::getDistance).sum();
         for (Edge edge : edges) {
             randomValue -= edge.getDistance();
             if (randomValue < 0) {

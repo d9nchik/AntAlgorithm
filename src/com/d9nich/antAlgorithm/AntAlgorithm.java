@@ -1,5 +1,7 @@
 package com.d9nich.antAlgorithm;
 
+import com.d9nich.GreedyAlgorithm;
+
 import java.util.Random;
 
 public class AntAlgorithm {
@@ -7,7 +9,7 @@ public class AntAlgorithm {
     public static final double RO = 0.4;//ρ
     public static final int ANTS_NUMBER = 35;
 
-    public static int findShortestDistance(int[][] distanceMatrix) {
+    public static double findShortestDistance(int[][] distanceMatrix) {
         final double[][] PHEROMONE = new double[distanceMatrix.length][distanceMatrix.length];
         for (int i = 0; i < PHEROMONE.length; i++) {
             for (int j = 0; j < PHEROMONE.length; j++) {
@@ -16,13 +18,27 @@ public class AntAlgorithm {
             }
         }
 
-        double[][] matrixOfReversedDistance = new double[distanceMatrix.length][distanceMatrix.length];
+        double[][] matrixOfReversedDistance = createMatrixOfReversedDistance(distanceMatrix);
         final Ant[] ants = new Ant[ANTS_NUMBER];
         Random random = new Random();
+        //making popularity
         for (int i = 0; i < ants.length; i++) {
             ants[i] = new Ant(PHEROMONE, matrixOfReversedDistance, distanceMatrix, random.nextInt(distanceMatrix.length));
         }
-        return 0;
+
+        double length = Ant.Lmin = GreedyAlgorithm.findL(distanceMatrix);
+        for (int i = 0; i < 1_000; i++) {
+            for (Ant ant : ants) {
+                length = Math.min(ant.walkThrough(), length);
+            }
+            updatePheromone(ants, PHEROMONE);
+            Ant.Lmin = length;
+            if (i % 20 == 0) {
+                System.out.println(length);
+            }
+        }
+
+        return length;
     }
 
     private static double[][] createMatrixOfReversedDistance(int[][] distanceMatrix) {
@@ -35,5 +51,17 @@ public class AntAlgorithm {
         }
 
         return matrixOfReversedDistance;
+    }
+
+    private static void updatePheromone(Ant[] ants, double[][] pheromone) {
+        for (int i = 0; i < pheromone.length; i++) {
+            for (int j = 0; j < pheromone.length; j++) {
+                pheromone[i][j] *= 1 - RO;
+            }
+        }
+
+        for (Ant ant : ants) {
+            ant.spreadPheromone();
+        }
     }
 }
