@@ -5,6 +5,11 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        Arrays.stream(MatrixDistanceGenerator.generate(15)).forEach(e -> System.out.println(Arrays.toString(e)));
+        final int[][] matrixOfDistance = MatrixDistanceGenerator.generate(150);
+//        Arrays.stream(matrixOfDistance).forEach(e -> System.out.println(Arrays.toString(e)));
+        long start = System.currentTimeMillis();
+        System.out.println(GreedyAlgorithm.findL(matrixOfDistance));
+        start = System.currentTimeMillis() - start;
+        System.out.println(start);
     }
 }
