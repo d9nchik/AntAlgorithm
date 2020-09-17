@@ -20,7 +20,7 @@ public class AntAlgorithm {
         final Ant[] ants = new Ant[ANTS_NUMBER];
         Random random = new Random();
         for (int i = 0; i < ants.length; i++) {
-            ants[i] = new Ant(PHEROMONE, matrixOfReversedDistance, random.nextInt(distanceMatrix.length));
+            ants[i] = new Ant(PHEROMONE, matrixOfReversedDistance, distanceMatrix, random.nextInt(distanceMatrix.length));
         }
         return 0;
     }

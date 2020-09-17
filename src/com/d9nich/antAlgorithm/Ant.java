@@ -1,36 +1,42 @@
 package com.d9nich.antAlgorithm;
 
 import com.d9nich.Edge;
-import com.d9nich.GreedyAlgorithm;
-import com.d9nich.MatrixDistanceGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class Ant {
     public static final double ALFA = 2;//α
     public static final double BETTA = 3;//β
+
     private final double[][] PHEROMONE;
     private final double[][] MATRIX_OF_REVERSE_DISTANCE;
+    private final int[][] DISTANCE_MATRIX;
     private final int startPoint;
 
-    public Ant(double[][] PHEROMONE, double[][] MATRIX_OF_REVERSE_DISTANCE, int startPoint) {
+    private final ArrayList<Integer> path = new ArrayList<>();
+
+    public Ant(double[][] PHEROMONE, double[][] MATRIX_OF_REVERSE_DISTANCE, int[][] DISTANCE_MATRIX, int startPoint) {
         this.PHEROMONE = PHEROMONE;
         this.MATRIX_OF_REVERSE_DISTANCE = MATRIX_OF_REVERSE_DISTANCE;
+        this.DISTANCE_MATRIX = DISTANCE_MATRIX;
         this.startPoint = startPoint;
     }
 
-    public void walkThrough() {
+    public double walkThrough() {
         Set<Integer> pointsToVisit = new HashSet<>();
         for (int i = 0; i < MATRIX_OF_REVERSE_DISTANCE.length; i++) {
             pointsToVisit.add(i);
         }
         pointsToVisit.remove(startPoint);
-        walkThrough(0, pointsToVisit);
+        return walkThrough(startPoint, pointsToVisit);
     }
 
-    private void walkThrough(int currentPosition, Set<Integer> pointsToVisit) {
+    private double walkThrough(int currentPosition, Set<Integer> pointsToVisit) {
         if (pointsToVisit.isEmpty()) {
-            return;
+            return DISTANCE_MATRIX[currentPosition][startPoint];
         }
 
         ArrayList<Edge> edges = new ArrayList<>();
@@ -39,10 +45,14 @@ public class Ant {
         for (Edge edge : edges) {
             randomValue -= edge.getDistance();
             if (randomValue < 0) {
-                pointsToVisit.remove(edge.getNumber());
-                walkThrough(edge.getNumber(), pointsToVisit);
+                final int newPosition = edge.getNumber();
+                pointsToVisit.remove(newPosition);
+                path.add(newPosition);
+                return walkThrough(newPosition, pointsToVisit) + DISTANCE_MATRIX[currentPosition][newPosition];
             }
         }
+
+        return -1;
     }
 
     private double needToGo(int from, int to) {
