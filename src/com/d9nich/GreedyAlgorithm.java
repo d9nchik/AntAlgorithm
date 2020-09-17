@@ -1,8 +1,6 @@
 package com.d9nich;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class GreedyAlgorithm {
     private GreedyAlgorithm() {
@@ -30,6 +28,7 @@ public class GreedyAlgorithm {
         int[] distance = matrixOfDistance[startPoint];
         ArrayList<Edge> edges = new ArrayList<>();
         pointsToVisit.forEach(e -> edges.add(new Edge(distance[e], e)));
+        Collections.sort(edges);
 
         for (Edge edge : edges) {
             final int nextStartPoint = edge.number;
@@ -54,7 +53,14 @@ public class GreedyAlgorithm {
 
         @Override
         public int compareTo(Edge o) {
-            return Integer.compare(this.number, o.number);
+            return Integer.compare(distance, o.distance);
+        }
+
+        @Override
+        public String toString() {
+            return "Edge{" + "distance=" + distance +
+                    ", number=" + number +
+                    '}';
         }
     }
 }
