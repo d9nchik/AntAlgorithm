@@ -45,9 +45,10 @@ public class Ant {
 
         ArrayList<Edge> edges = new ArrayList<>();
         pointsToVisit.forEach(e -> edges.add(new Edge(needToGo(currentPosition, e), e)));
-        double randomValue = new Random().nextDouble() * edges.stream().mapToDouble(Edge::getDistance).sum();
+        final double sum = edges.stream().mapToDouble(Edge::getDistance).sum();
+        double randomValue = new Random().nextDouble();
         for (Edge edge : edges) {
-            randomValue -= edge.getDistance();
+            randomValue -= edge.getDistance() / sum;
             if (randomValue < 0) {
                 final int newPosition = edge.getNumber();
                 pointsToVisit.remove(newPosition);
@@ -55,8 +56,7 @@ public class Ant {
                 return walkThrough(newPosition, pointsToVisit) + DISTANCE_MATRIX[currentPosition][newPosition];
             }
         }
-
-        return -1;
+        return Double.POSITIVE_INFINITY;
     }
 
     public void spreadPheromone() {
