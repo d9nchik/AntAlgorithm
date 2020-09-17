@@ -10,11 +10,13 @@ import java.util.Set;
 public class Ant {
     public static final double ALFA = 2;//α
     public static final double BETTA = 3;//β
+    public static double Lmin = Double.POSITIVE_INFINITY;
 
     private final double[][] PHEROMONE;
     private final double[][] MATRIX_OF_REVERSE_DISTANCE;
     private final int[][] DISTANCE_MATRIX;
     private final int startPoint;
+    private double pathLength;
 
     private final ArrayList<Integer> path = new ArrayList<>();
 
@@ -26,12 +28,14 @@ public class Ant {
     }
 
     public double walkThrough() {
+        path.clear();
         Set<Integer> pointsToVisit = new HashSet<>();
         for (int i = 0; i < MATRIX_OF_REVERSE_DISTANCE.length; i++) {
             pointsToVisit.add(i);
         }
         pointsToVisit.remove(startPoint);
-        return walkThrough(startPoint, pointsToVisit);
+        pathLength = walkThrough(startPoint, pointsToVisit);
+        return pathLength;
     }
 
     private double walkThrough(int currentPosition, Set<Integer> pointsToVisit) {
@@ -53,6 +57,14 @@ public class Ant {
         }
 
         return -1;
+    }
+
+    public void spreadPheromone() {
+        int current = startPoint;
+        for (Integer position : path) {
+            PHEROMONE[current][position] += Lmin / pathLength;
+            current = position;
+        }
     }
 
     private double needToGo(int from, int to) {
