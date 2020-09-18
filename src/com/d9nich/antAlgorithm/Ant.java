@@ -70,4 +70,13 @@ public class Ant {
     private double needToGo(int from, int to) {
         return Math.pow(PHEROMONE[from][to], ALFA) * Math.pow(MATRIX_OF_REVERSE_DISTANCE[from][to], BETTA);
     }
+
+    public int[] getPath() {
+        int[] array = new int[path.size() + 1];
+        array[0] = startPoint;
+        for (int i = 0; i < path.size(); i++) {
+            array[i + 1] = path.get(i);
+        }
+        return array;
+    }
 }

@@ -9,7 +9,7 @@ public class AntAlgorithm {
     public static final double RO = 0.4;//ρ
     public static final int ANTS_NUMBER = 35;
 
-    public static double findShortestDistance(int[][] distanceMatrix) {
+    public static int[] findShortestDistance(int[][] distanceMatrix) {
         final double[][] PHEROMONE = new double[distanceMatrix.length][distanceMatrix.length];
         for (int i = 0; i < PHEROMONE.length; i++) {
             for (int j = 0; j < PHEROMONE.length; j++) {
@@ -27,18 +27,25 @@ public class AntAlgorithm {
         }
 
         double length = Ant.Lmin = GreedyAlgorithm.findL(distanceMatrix);
+        int[] path = null;
+        System.out.println("Greedy algorithm length: " + length);
         for (int i = 0; i < 1_000; i++) {
             for (Ant ant : ants) {
-                length = Math.min(ant.walkThrough(), length);
+                final double antPathLength = ant.walkThrough();
+                if (antPathLength < length) {
+                    length = antPathLength;
+                    path = ant.getPath();
+                }
             }
             updatePheromone(ants, PHEROMONE);
             Ant.Lmin = length;
+            //Printing path length
             if (i % 20 == 0) {
-                System.out.println(length);
+                System.out.println(i + ") " + length);
             }
         }
 
-        return length;
+        return path;
     }
 
     private static double[][] createMatrixOfReversedDistance(int[][] distanceMatrix) {

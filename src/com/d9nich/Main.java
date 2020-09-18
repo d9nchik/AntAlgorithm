@@ -7,6 +7,11 @@ public class Main {
     public static void main(String[] args) {
         final int[][] matrixOfDistance = MatrixDistanceGenerator.generate(150);
 //        Arrays.stream(matrixOfDistance).forEach(e -> System.out.println(Arrays.toString(e)));
-        System.out.println(AntAlgorithm.findShortestDistance(matrixOfDistance));
+
+        final int[] shortestDistance = AntAlgorithm.findShortestDistance(matrixOfDistance);
+        System.out.println("Path: ");
+        for (int number : shortestDistance) {
+            System.out.print(number + 1 + "->");
+        }
     }
 }
