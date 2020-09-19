@@ -1,4 +1,4 @@
-package com.d9nich.pathFindingAlgorithm.antAlgorithm;
+package com.d9nich.pathFindingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;

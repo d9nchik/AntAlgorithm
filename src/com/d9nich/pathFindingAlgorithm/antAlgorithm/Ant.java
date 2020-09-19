@@ -1,5 +1,7 @@
 package com.d9nich.pathFindingAlgorithm.antAlgorithm;
 
+import com.d9nich.pathFindingAlgorithm.Edge;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;

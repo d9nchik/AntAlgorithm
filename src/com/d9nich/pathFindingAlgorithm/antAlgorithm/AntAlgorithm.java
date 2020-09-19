@@ -1,5 +1,8 @@
 package com.d9nich.pathFindingAlgorithm.antAlgorithm;
 
+import com.d9nich.pathFindingAlgorithm.GreedyAlgorithm;
+import com.d9nich.pathFindingAlgorithm.PathFindable;
+
 import java.util.Random;
 
 public class AntAlgorithm {
