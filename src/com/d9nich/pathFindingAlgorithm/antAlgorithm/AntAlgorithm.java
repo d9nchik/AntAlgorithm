@@ -1,6 +1,4 @@
-package com.d9nich.antAlgorithm;
-
-import com.d9nich.GreedyAlgorithm;
+package com.d9nich.pathFindingAlgorithm.antAlgorithm;
 
 import java.util.Random;
 
@@ -26,8 +24,9 @@ public class AntAlgorithm {
             ants[i] = new Ant(PHEROMONE, matrixOfReversedDistance, distanceMatrix, random.nextInt(distanceMatrix.length));
         }
 
-        double length = Ant.Lmin = GreedyAlgorithm.findL(distanceMatrix);
-        int[] path = null;
+        PathFindable pathFindable = new GreedyAlgorithm(distanceMatrix);
+        double length = Ant.Lmin = pathFindable.getLength();
+        int[] path = pathFindable.getPath();
         System.out.println("Greedy algorithm length: " + length);
         for (int i = 0; i < 1_000; i++) {
             for (Ant ant : ants) {

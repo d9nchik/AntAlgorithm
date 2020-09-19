@@ -1,6 +1,4 @@
-package com.d9nich.antAlgorithm;
-
-import com.d9nich.Edge;
+package com.d9nich.pathFindingAlgorithm.antAlgorithm;
 
 import java.util.ArrayList;
 import java.util.HashSet;

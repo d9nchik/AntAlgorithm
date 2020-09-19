@@ -1,6 +1,6 @@
 package com.d9nich;
 
-import com.d9nich.antAlgorithm.AntAlgorithm;
+import com.d9nich.pathFindingAlgorithm.antAlgorithm.AntAlgorithm;
 
 public class Main {
 

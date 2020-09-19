@@ -1,4 +1,4 @@
-package com.d9nich;
+package com.d9nich.pathFindingAlgorithm.antAlgorithm;
 
 public class Edge implements Comparable<Edge>{
     private final double distance;
