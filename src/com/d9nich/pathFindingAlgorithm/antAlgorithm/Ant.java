@@ -20,6 +20,14 @@ public class Ant {
 
     private final ArrayList<Integer> path = new ArrayList<>();
 
+    /**
+     * Create object Ant
+     *
+     * @param PHEROMONE                  array, that represents pheromone on path
+     * @param MATRIX_OF_REVERSE_DISTANCE ant seeing
+     * @param DISTANCE_MATRIX            represents distance from one point to another
+     * @param startPoint                 start point of path
+     */
     public Ant(double[][] PHEROMONE, double[][] MATRIX_OF_REVERSE_DISTANCE, int[][] DISTANCE_MATRIX, int startPoint) {
         this.PHEROMONE = PHEROMONE;
         this.MATRIX_OF_REVERSE_DISTANCE = MATRIX_OF_REVERSE_DISTANCE;
@@ -27,6 +35,9 @@ public class Ant {
         this.startPoint = startPoint;
     }
 
+    /**
+     * @return length of path
+     */
     public double walkThrough() {
         path.clear();
         Set<Integer> pointsToVisit = new HashSet<>();
@@ -38,6 +49,13 @@ public class Ant {
         return pathLength;
     }
 
+    /**
+     * Helper method for walkThrough()
+     *
+     * @param currentPosition represents number of node, where ant stays.
+     * @param pointsToVisit   represents nodes, that ant wants to visit
+     * @return length of path
+     */
     private double walkThrough(int currentPosition, Set<Integer> pointsToVisit) {
         if (pointsToVisit.isEmpty()) {
             return DISTANCE_MATRIX[currentPosition][startPoint];
@@ -59,6 +77,9 @@ public class Ant {
         return Double.POSITIVE_INFINITY;
     }
 
+    /**
+     * ant influence on environment by spreading pheromone
+     */
     public void spreadPheromone() {
         int current = startPoint;
         for (Integer position : path) {
@@ -67,10 +88,20 @@ public class Ant {
         }
     }
 
+    /**
+     * Calculating possibility, that ant will come these way
+     *
+     * @param from start node
+     * @param to   end node
+     * @return possibility
+     */
     private double needToGo(int from, int to) {
         return Math.pow(PHEROMONE[from][to], ALFA) * Math.pow(MATRIX_OF_REVERSE_DISTANCE[from][to], BETTA);
     }
 
+    /**
+     * @return recent ant path
+     */
     public int[] getPath() {
         int[] array = new int[path.size() + 1];
         array[0] = startPoint;
