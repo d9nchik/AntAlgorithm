@@ -11,13 +11,18 @@ public class GreedyAlgorithm implements PathFindable {
     private final ArrayList<Integer> PATH = new ArrayList<>();
     private double pathLength;
 
+    /**
+     * Creates GreedyAlgorithm object
+     *
+     * @param MATRIX_OF_DISTANCE matrix, that represents distance between nodes.
+     */
     public GreedyAlgorithm(int[][] MATRIX_OF_DISTANCE) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
         findL();
     }
 
     /**
-     * Search approximate distance of travelling salesman problem
+     * Search approximate distance and path of travelling salesman problem
      */
     private void findL() {
         Set<Integer> pointsToVisit = new HashSet<>();
@@ -28,6 +33,14 @@ public class GreedyAlgorithm implements PathFindable {
         PATH.add(0);
     }
 
+    /**
+     * Helper method for findL method
+     *
+     * @param startPoint    starting node
+     * @param pointsToVisit nodes, that hasn't been visited
+     * @param endPoint      point in which we should end our path
+     * @return path length
+     */
     private double findL(int startPoint, Set<Integer> pointsToVisit, int endPoint) {
         if (pointsToVisit.isEmpty()) {
             int finalDistance = MATRIX_OF_DISTANCE[startPoint][endPoint];
@@ -55,6 +68,9 @@ public class GreedyAlgorithm implements PathFindable {
         return -1;
     }
 
+    /**
+     * @return path
+     */
     @Override
     public int[] getPath() {
         int[] result = new int[PATH.size()];
@@ -64,6 +80,9 @@ public class GreedyAlgorithm implements PathFindable {
         return result;
     }
 
+    /**
+     * @return length of path
+     */
     @Override
     public double getLength() {
         return pathLength;
