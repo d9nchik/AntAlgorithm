@@ -19,14 +19,16 @@ public class AntAlgorithm implements PathFindable {
     public AntAlgorithm(int[][] DISTANCE_MATRIX) {
         this.DISTANCE_MATRIX = DISTANCE_MATRIX;
         MATRIX_OF_REVERSED_DISTANCE = createMatrixOfReversedDistance(DISTANCE_MATRIX);
-        PHEROMONE = createMatrixOfPheromone(DISTANCE_MATRIX.length);
+
         PathFindable pathFindable = new GreedyAlgorithm(DISTANCE_MATRIX);
         pathLength = Ant.Lmin = pathFindable.getLength();
         path = pathFindable.getPath();
+
+        PHEROMONE = createMatrixOfPheromone(DISTANCE_MATRIX.length, path);
         findShortestDistance();
     }
 
-    private static double[][] createMatrixOfPheromone(int length) {
+    private static double[][] createMatrixOfPheromone(int length, int[] path) {
         final double[][] PHEROMONE = new double[length][length];
         for (int i = 0; i < PHEROMONE.length; i++) {
             for (int j = 0; j < PHEROMONE.length; j++) {
@@ -34,6 +36,14 @@ public class AntAlgorithm implements PathFindable {
                     PHEROMONE[i][j] = 0.1;
             }
         }
+
+        int start = path[0];
+        //Bigger pheromone on found greedy path
+        for (int i = 1; i < path.length; i++) {
+            PHEROMONE[start][path[i]] = 0.3;
+            start = path[i];
+        }
+
         return PHEROMONE;
     }
 
