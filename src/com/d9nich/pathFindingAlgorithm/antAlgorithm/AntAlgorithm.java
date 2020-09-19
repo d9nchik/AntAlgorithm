@@ -16,6 +16,11 @@ public class AntAlgorithm implements PathFindable {
     private int[] path;
     private double pathLength;
 
+    /**
+     * Creates AntAlgorithm object
+     *
+     * @param DISTANCE_MATRIX represents distance between nodes
+     */
     public AntAlgorithm(int[][] DISTANCE_MATRIX) {
         this.DISTANCE_MATRIX = DISTANCE_MATRIX;
         MATRIX_OF_REVERSED_DISTANCE = createMatrixOfReversedDistance(DISTANCE_MATRIX);
@@ -28,6 +33,13 @@ public class AntAlgorithm implements PathFindable {
         findShortestDistance();
     }
 
+    /**
+     * Creates matrix of pheromone
+     *
+     * @param length number of nodes
+     * @param path   path, that has been found
+     * @return matrix of pheromone
+     */
     private static double[][] createMatrixOfPheromone(int length, int[] path) {
         final double[][] PHEROMONE = new double[length][length];
         for (int i = 0; i < PHEROMONE.length; i++) {
@@ -47,6 +59,45 @@ public class AntAlgorithm implements PathFindable {
         return PHEROMONE;
     }
 
+    /**
+     * Creates matrix with ant seeing
+     *
+     * @param distanceMatrix distance matrix
+     * @return matrix of ant seeing
+     */
+    private static double[][] createMatrixOfReversedDistance(int[][] distanceMatrix) {
+        double[][] matrixOfReversedDistance = new double[distanceMatrix.length][distanceMatrix.length];
+        for (int i = 0; i < matrixOfReversedDistance.length; i++) {
+            for (int j = 0; j < matrixOfReversedDistance.length; j++) {
+                if (i != j)
+                    matrixOfReversedDistance[i][j] = 1.0 / distanceMatrix[i][j];
+            }
+        }
+
+        return matrixOfReversedDistance;
+    }
+
+    /**
+     * update pheromone values
+     *
+     * @param ants      Ant objects
+     * @param pheromone matrix, that represents pheromone
+     */
+    private static void updatePheromone(Ant[] ants, double[][] pheromone) {
+        for (int i = 0; i < pheromone.length; i++) {
+            for (int j = 0; j < pheromone.length; j++) {
+                pheromone[i][j] *= 1 - RO;
+            }
+        }
+
+        for (Ant ant : ants) {
+            ant.spreadPheromone();
+        }
+    }
+
+    /**
+     * main part of ant algorithm
+     */
     private void findShortestDistance() {
         final Ant[] ants = makeColony();
 
@@ -68,30 +119,11 @@ public class AntAlgorithm implements PathFindable {
         }
     }
 
-    private static double[][] createMatrixOfReversedDistance(int[][] distanceMatrix) {
-        double[][] matrixOfReversedDistance = new double[distanceMatrix.length][distanceMatrix.length];
-        for (int i = 0; i < matrixOfReversedDistance.length; i++) {
-            for (int j = 0; j < matrixOfReversedDistance.length; j++) {
-                if (i != j)
-                    matrixOfReversedDistance[i][j] = 1.0 / distanceMatrix[i][j];
-            }
-        }
-
-        return matrixOfReversedDistance;
-    }
-
-    private static void updatePheromone(Ant[] ants, double[][] pheromone) {
-        for (int i = 0; i < pheromone.length; i++) {
-            for (int j = 0; j < pheromone.length; j++) {
-                pheromone[i][j] *= 1 - RO;
-            }
-        }
-
-        for (Ant ant : ants) {
-            ant.spreadPheromone();
-        }
-    }
-
+    /**
+     * Creates array of Ant objects
+     *
+     * @return array of Ant objects
+     */
     private Ant[] makeColony() {
         final Ant[] ants = new Ant[ANTS_NUMBER];
         Random random = new Random();
@@ -103,11 +135,17 @@ public class AntAlgorithm implements PathFindable {
         return ants;
     }
 
+    /**
+     * @return path
+     */
     @Override
     public int[] getPath() {
         return path;
     }
 
+    /**
+     * @return length of path
+     */
     @Override
     public double getLength() {
         return pathLength;
